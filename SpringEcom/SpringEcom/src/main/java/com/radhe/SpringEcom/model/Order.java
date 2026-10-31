@@ -1,0 +1,41 @@
+package com.radhe.SpringEcom.model;
+
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+@Entity(name = "orders")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true)
+    private String orderId;
+
+    private String customerName;
+    private String email;
+    private String status;
+
+    private LocalDate orderDate;
+
+    // ---- NEW: Razorpay fields ----
+    @Column(unique = true)
+    private String razorpayOrderId;
+    private String razorpayPaymentId;
+    private BigDecimal totalAmount;
+
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
+}
